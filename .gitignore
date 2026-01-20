@@ -1,0 +1,21 @@
+# Окружение
+venv/
+.venv/
+env/
+ENV/
+
+# Кэш
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Личные настройки и пароли
+.env
+.env.local
+.env.*.local
+
+# Базы данных (если хранишь sqlite локально для тестов)
+*.db
