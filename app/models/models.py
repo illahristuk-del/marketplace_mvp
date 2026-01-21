@@ -13,7 +13,7 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     first_name: Mapped[str] = mapped_column(String(225), nullable=False)
     last_name: Mapped[str] = mapped_column(String(225), nullable=False)
-    username: Mapped[str] = mapped_column(String(225), nullable=False)
+    username: Mapped[str] = mapped_column(String(225), unique=True ,nullable=False)
     email: Mapped[str] = mapped_column(String(225), unique=True, nullable=False)
     phone_number: Mapped[str] = mapped_column(String(30), unique=True, nullable=False)
 
