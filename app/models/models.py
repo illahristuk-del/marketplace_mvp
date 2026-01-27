@@ -1,10 +1,18 @@
 from sqlalchemy.orm import relationship, mapped_column, Mapped, DeclarativeBase
-from sqlalchemy import Integer, String, ForeignKey, TIMESTAMP, func, Float, Boolean, ARRAY, Text
+from sqlalchemy import Integer, String, ForeignKey, TIMESTAMP, func, Boolean, Text, Enum as SQLEnum
+
 from datetime import datetime
 from typing import List
 
+from enum import Enum as PyEnum
+
 class Base(DeclarativeBase):
     pass
+
+class UserRole(str, PyEnum):
+    BUYER = "buyer"
+    SELLER = "seller"
+    ADMIN = "admin"
 
 #User
 class User(Base):
@@ -17,7 +25,7 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(225), unique=True, nullable=False)
     phone_number: Mapped[str] = mapped_column(String(30), unique=True, nullable=False)
 
-    role: Mapped[str] = mapped_column(String(20), server_default="buyer")
+    role: Mapped[UserRole] = mapped_column(SQLEnum(UserRole), server_default="buyer", nullable=False)
 
     hashed_password: Mapped[str] = mapped_column(String(225))
     
