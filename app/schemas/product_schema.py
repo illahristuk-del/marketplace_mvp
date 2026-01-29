@@ -31,3 +31,12 @@ class ProductUpdate(BaseModel):
     quantity: Annotated[int | None, Field(ge=0)] = None
     is_active: bool | None = None
     category_id: int | None = None
+
+class ProductInPublic(BaseModel):
+    id: int
+    title: Annotated[str, Field(max_length=225)]
+    description: Annotated[str | None, Field()] = None
+    price: Annotated[int, Field(ge=0)]
+    quantity: Annotated[int, Field(ge=0)]
+    is_active: bool = True
+    category_id: int | None = None
