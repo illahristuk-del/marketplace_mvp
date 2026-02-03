@@ -55,4 +55,4 @@ async def update_product(db: DBSession, current_user: AllowAll, product_id: int)
     
     await prod_crud.delete_product(db=db, db_product=product)
 
-    return {"status": "done", "product_id": product.id} 
+    return {"status": "done", "product_id": product.id}  
