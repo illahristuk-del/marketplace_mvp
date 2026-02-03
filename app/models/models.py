@@ -14,6 +14,13 @@ class UserRole(str, PyEnum):
     SELLER = "seller"
     ADMIN = "admin"
 
+class OrderStatus(str, PyEnum):
+    PENDING = "pending"
+    PAID = "paid"
+    SHIPPED = "shipped"   
+    DELIVERED = "delivered"
+    CANCELLED = "cancelled"
+
 #User
 class User(Base):
     __tablename__ = "users"
@@ -65,3 +72,33 @@ class Category(Base):
     slug: Mapped[str] = mapped_column(String(225), unique=True, nullable=False)
 
     products: Mapped[List["Product"]] = relationship(back_populates="category")
+
+#ItemInOrder
+class OrderItem(Base):
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"))
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"))
+
+    price: Mapped[int] = mapped_column(Integer, nullable=False)
+    quantity: Mapped[int] = mapped_column(Integer, default=1)
+
+    order: Mapped["Order"] = relationship(back_populates="items")
+    product: Mapped["Product"] = relationship()
+
+#Order
+class Order(Base):
+    __tablename__ = "orders"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    
+    status: Mapped[OrderStatus] = mapped_column(SQLEnum(OrderStatus), server_default="pending", nullable=False)
+
+    total_price: Mapped[int] = mapped_column(Integer, nullable=False)
+    
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.now())
+
+    user: Mapped["User"] = relationship()
+    items: Mapped["OrderItem"] = relationship(back_populates="order")
